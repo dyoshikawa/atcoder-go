@@ -7,6 +7,11 @@ import (
 	"strconv"
 )
 
+const (
+	maxInf = 9999999999
+	minInf = -9999999999
+)
+
 type IntListForSort []int
 
 func (s IntListForSort) Len() int           { return len(s) }
@@ -79,21 +84,5 @@ func convListStrToFloat(strList []string) []float64 {
 }
 
 func main() {
-	n, _ := strconv.Atoi(inputLn())
-	aList := make([]int, n)
-	for i := 0; i < n; i++ {
-		a, _ := strconv.Atoi(inputLn())
-		aList[i] = a
-	}
-	aListClone := make([]int, n)
-	_ = copy(aListClone, aList)
-	sortIntList(aListClone)
-	for _, a := range aList {
-		tgIndex := binarySearchInt(aListClone, a, 0, len(aListClone)-1)
-		if tgIndex == n-1 {
-			fmt.Println(aListClone[n-2])
-		} else {
-			fmt.Println(aListClone[n-1])
-		}
-	}
+	//n, _ := strconv.Atoi(inputLn())
 }
