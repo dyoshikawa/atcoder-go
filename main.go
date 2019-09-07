@@ -28,7 +28,6 @@ func sortIntListDesc(intList []int) {
 }
 
 // ASC前提
-// 見つからない場合は前提じゃない
 func binarySearchInt(intList []int, key int, iMin int, iMax int) int {
 	if iMax < iMin {
 		return -1
