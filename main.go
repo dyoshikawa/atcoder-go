@@ -83,6 +83,105 @@ func convListStrToFloat(strList []string) []float64 {
 	return intList
 }
 
+func swapIntList(list []int, a int, b int) []int {
+	tmp := list[a]
+	list[a] = list[b]
+	list[b] = tmp
+	return list
+}
+
+type heapIntDesc struct {
+	list []int
+}
+
+func (h *heapIntDesc) push(el int) {
+	h.list = append(h.list, el)
+	//fmt.Println(h.list)
+	length := len(h.list)
+	elIndex := length - 1
+	for {
+		if elIndex == 0 {
+			break
+		}
+		// 奇数なら左側、偶数なら右側
+		isLeft := elIndex%2 == 1
+		//fmt.Println(isLeft)
+		var parentIndex int
+		if isLeft {
+			parentIndex = elIndex / 2
+		} else {
+			parentIndex = (elIndex - 1) / 2
+		}
+		//fmt.Println(h.list[elIndex] > h.list[parentIndex])
+		if h.list[elIndex] > h.list[parentIndex] {
+			swap := h.list[elIndex]
+			h.list[elIndex] = h.list[parentIndex]
+			h.list[parentIndex] = swap
+			elIndex = parentIndex
+		} else {
+			break
+		}
+	}
+}
+
+func (h *heapIntDesc) pop() int {
+	popped := h.list[0]
+	lastIndex := len(h.list) - 1
+	h.list = swapIntList(h.list, 0, lastIndex)
+	h.list = h.list[:lastIndex]
+	lastIndex--
+	elIndex := 0
+	for {
+		var leftChildIndex, rightChildIndex int
+		if elIndex == 0 {
+			leftChildIndex = 1
+			rightChildIndex = 2
+		} else {
+			leftChildIndex = elIndex * 2
+			rightChildIndex = elIndex*2 + 1
+		}
+		if leftChildIndex > lastIndex {
+			break
+		}
+		var maxChildIndex int
+		if rightChildIndex <= lastIndex {
+			if h.list[leftChildIndex] > h.list[rightChildIndex] {
+				maxChildIndex = leftChildIndex
+			} else {
+				maxChildIndex = rightChildIndex
+			}
+		} else {
+			maxChildIndex = leftChildIndex
+		}
+		//fmt.Println("maxChild")
+		//fmt.Println(h.list[maxChildIndex])
+		if h.list[elIndex] < h.list[maxChildIndex] {
+			h.list = swapIntList(h.list, elIndex, maxChildIndex)
+			elIndex = maxChildIndex
+		} else {
+			break
+		}
+	}
+	return popped
+}
+
+func heapSortIntList(list []int) {
+	length := len(list)
+	heapList := make([]int, length)
+	for i := 0; i < length; i++ {
+		heapList[i] = list[i]
+	}
+}
+
 func main() {
-	//n, _ := strconv.Atoi(inputLn())
+	arr := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+	heap := heapIntDesc{list: []int{}}
+	for _, v := range arr {
+		heap.push(v)
+		fmt.Println(heap.list)
+	}
+	for i := 0; i < len(arr); i++ {
+		fmt.Println(heap.pop())
+		//fmt.Println(heap.list)
+	}
 }
